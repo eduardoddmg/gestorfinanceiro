@@ -1,7 +1,5 @@
-const express = require('express');
-const app = express();
 const home = require('./home');
 
-export default function RouterMain() {
+export default function RouterMain(app: any) {
     return app.use('/', home);
 };
