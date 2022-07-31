@@ -1,15 +1,13 @@
+import express  from "express";
 import RouterMain from "./router";
-import { PortType } from "./types";
-const express = require('express');
-const app = express();
+import configServer from "../config"
+
 const cors = require('cors');   
-const port: PortType = 3001;
 
 
-app.use(RouterMain());
+const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(RouterMain());
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+configServer(app);
