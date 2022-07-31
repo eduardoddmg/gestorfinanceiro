@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "backend/src/app.ts",
   "scripts": {
-    "postinstall": "cd backend && npx ts-node src/app.ts",
+    "postinstall": "npx ts-node backend/src/app.ts",
     "startLocal": "cd backend && npx ts-node src/app.ts"
   },
   "dependencies": {
