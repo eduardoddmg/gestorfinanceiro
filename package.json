@@ -5,7 +5,7 @@
   "scripts": {
     "start": " cd backend && npm install && node build/src/app.js",
     "dev": "cd backend && nodemon -x ts-node src/app.ts",
-    "build": "cd backend && npm install && tsc"
+    "build": "cd backend && npm install && npm i --save-dev @types/express && tsc"
   },
   "dependencies": {
     "ts-node": "^10.9.1",
