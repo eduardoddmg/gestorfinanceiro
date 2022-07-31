@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(middlewareRouter);
 
 router.get('/', (req: RequestInterface, res: Response, next: NextFunction) => {
-    res.send(req.user);
+    res.send({user: req.user});
     console.log('funcionou');
 });
 
