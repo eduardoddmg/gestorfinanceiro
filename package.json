@@ -5,5 +5,8 @@
   "scripts": {
     "start": "npx ts-node backend/src/app.ts",
     "startLocal": "cd backend && npx ts-node src/app.ts"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.1"
   }
 }
