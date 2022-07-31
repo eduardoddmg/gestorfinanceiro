@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "backend/src/app.ts",
   "scripts": {
-    "start": " cd backend && npm install --save-dev && ts-node src/app.ts",
-    "dev": "cd backend && nodemon -x ts-node src/app.ts"
+    "start": " cd backend && npm install --save-dev && node build/src/app.ts",
+    "dev": "cd backend && nodemon -x ts-node src/app.ts",
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "ts-node": "^10.9.1",
