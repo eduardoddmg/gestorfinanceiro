@@ -6,6 +6,7 @@ export const dataNavbar = {
     { name: "FAQ", href: "#questions" },
     { name: "Contato", href: "#contact" },
   ],
+  btn: {name: "Entrar"}
 };
 
 export const logos = [

@@ -9,7 +9,3 @@ html {
     scroll-behavior: smooth;
 }
 
-.btn:hover {
-    transform: scale(1.1);
-    transition: 1s;
-}

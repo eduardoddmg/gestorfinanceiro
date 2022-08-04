@@ -1,9 +1,9 @@
 import React from "react";
-import { HStack, Link } from "@chakra-ui/react";
+import { Button, HStack, Link } from "@chakra-ui/react";
 import { dataNavbar } from "../../utils";
 
 const NavbarDesktop = (props) => {
-  const { linkHeader, linksSecondary } = dataNavbar;
+  const { linkHeader, linksSecondary, btn } = dataNavbar;
   return (
     <>
       <HStack
@@ -27,6 +27,7 @@ const NavbarDesktop = (props) => {
               {item.name}
             </Link>
           ))}
+          <Button color="green.500">{btn.name}</Button>
         </HStack>
       </HStack>
     </>
