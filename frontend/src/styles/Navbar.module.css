@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  padding: 2vh;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  position: relative;
+}
+
+.navbar a {
+  margin: 1vh 3vh;
+}
+
+.navbar_responsive {
+  width: 100%;
+  padding: 4vh;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+
+}
+
+.navbar_responsive a {
+  margin: 1vh 3vh;
+}
+
+.nav_open {
+  z-index: 9999;
+  position: absolute;
+}
+
+@media only screen and (max-width: 1000px) {
+  .navbar {
+    flex-direction: column;
+    justify-content: left;
+    z-index: 10;
+  }
+}
