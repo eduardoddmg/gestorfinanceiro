@@ -1,18 +1,15 @@
 import React from "react";
-import Navbar from "./navbar/Navbar";
-import { dataNavbar } from "../utils";
+import { useResponsive } from "../hooks";
 import Footer from "./footer";
+import NavbarDesktop from "./navbar/NavbarDesktop";
+import NavbarResponsive from "./navbar/NavbarResponsive";
 
 const LayoutComponent = ({ children }) => {
-  const { linkHeader, linksPrincipal, linksSecondary } = dataNavbar;
-  
+  const responsive = useResponsive();
+
   return (
     <>
-      <Navbar
-        linkHeader={linkHeader}
-        linksPrincipal={linksPrincipal}
-        linksSecondary={linksSecondary}
-      />
+      {responsive ? <NavbarResponsive /> : <NavbarDesktop />}
       {children}
       <Footer />
     </>

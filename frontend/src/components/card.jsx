@@ -2,9 +2,10 @@ import { Heading, Text, VStack, Center } from "@chakra-ui/react";
 import React from "react";
 
 const Card = (props) => {
-  const { title, text, width } = props;
+  const { title, text, width, key } = props;
   return (
     <VStack
+      key={key}
       align="start"
       px={4}
       py={8}

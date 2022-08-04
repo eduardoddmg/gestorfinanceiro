@@ -17,6 +17,60 @@ export const logos = [
   { src: "google.svg", alt: "google" },
 ];
 
+export const beneficies = [
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+];
+
+export const services = [
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+  {
+    title: "title",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ex corrupti mollitia eos, debitis ipsam, facilis impedit eum",
+  },
+];
+
 export const questions = [
   {
     title: "Question",
