@@ -21,7 +21,7 @@ const Navbar = (props) => {
         justify={!responsive && "space-between"}
         p={4}
         bg="green.500"
-        color="#000"
+        color="#fff"
         fontWeight="bold"
         w="100%"
         position="sticky"
