@@ -91,7 +91,7 @@ function App() {
           direction={responsive ? "column" : "row"}
         >
           <Image src="/assets/services.svg" boxSize="40%" />
-          <Flex w={responsive ? "100%" : "50%"} wrap="wrap" px={10}>
+          <Flex w={responsive ? "100%" : "50%"} wrap="wrap" px={responsive ? "" : 10}>
             <Card
               width={responsive ? "90%" : "40%"}
               title="title"

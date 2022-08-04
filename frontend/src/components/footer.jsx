@@ -3,8 +3,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <Center bg="black" color="white" py={3}>
-      <Text fontSize="medium" fontWeight="bold">Todos os direitos reservados &copy; - Gestor Financeiro</Text>
+    <Center bg="black" color="white" p={4}>
+      <Text textAlign="center" fontSize="medium" fontWeight="bold">Todos os direitos reservados &copy; - Gestor Financeiro</Text>
     </Center>
   );
 };
