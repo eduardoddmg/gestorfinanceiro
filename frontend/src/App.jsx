@@ -32,7 +32,7 @@ function App() {
           spacing={5}
           w={responsive ? "100%" : "50%"}
           my={20}
-          px={20}
+          px={responsive ? 10 : 20}
           align="start"
           justify="end"
         >
