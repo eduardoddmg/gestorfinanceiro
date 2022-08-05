@@ -11,12 +11,14 @@ import React from "react";
 import Input from "../components/input";
 import LayoutComponent from "../components/LayoutComponent";
 import { Link } from "react-router-dom";
+import { useResponsive } from "../hooks";
 
 const Register = () => {
+  const responsive = useResponsive();
   return (
     <LayoutComponent>
       <HStack justify="center" align="center">
-        <VStack spacing={5} mb={10} w="40%" justify="center" py={10}>
+        <VStack spacing={5} mb={10} w={responsive ? "90%" :"40%"} justify="center" py={10}>
           <Heading>Register</Heading>
           <Input label="username" width="80%" />
           <Input label="email" width="80%" />
@@ -37,9 +39,9 @@ const Register = () => {
             </LinkChakra>
           </Text>
         </VStack>
-        <VStack w="40%" py={20} h="80vh">
+        {!responsive && <VStack w="40%" py={20} h="80vh">
           <Image src="/assets/login.svg" alt="login" boxSize="80%" my={10} />
-        </VStack>
+        </VStack>}
       </HStack>
     </LayoutComponent>
   );
