@@ -7,9 +7,18 @@ const Input = (props) => {
     <Stack align="left" width={width}>
       <label>{label}</label>
       {textArea ? (
-        <Textarea placeholder={placeholder} {...restOfProps} />
+        <Textarea
+          focusBorderColor="green.500"
+          placeholder={placeholder}
+          {...restOfProps}
+        />
       ) : (
-        <InputChakra colorScheme="green" placeholder={placeholder} {...restOfProps} />
+        <InputChakra
+          focusBorderColor="green.500"
+          colorScheme="green"
+          placeholder={placeholder}
+          {...restOfProps}
+        />
       )}
     </Stack>
   );

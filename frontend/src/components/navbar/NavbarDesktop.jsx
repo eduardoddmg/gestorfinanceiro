@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, HStack, Link } from "@chakra-ui/react";
+import { Button, HStack, Link as LinkChakra } from "@chakra-ui/react";
 import { dataNavbar } from "../../utils";
+import { Link } from "react-router-dom";
 
 const NavbarDesktop = (props) => {
   const { linkHeader, linksSecondary, btn } = dataNavbar;
@@ -18,16 +19,16 @@ const NavbarDesktop = (props) => {
         top="0"
         zIndex={9999}
       >
-        <Link px={6} href={linkHeader.href}>
+        <LinkChakra px={6} href={linkHeader.href}>
           {linkHeader.name}
-        </Link>
+        </LinkChakra>
         <HStack bg="green.500" spacing={4}>
           {linksSecondary.map((item, index) => (
-            <Link href={item.href} key={index} px={6}>
+            <LinkChakra href={`/${item.href}`} key={index} px={6}>
               {item.name}
-            </Link>
+            </LinkChakra>
           ))}
-          <Button color="green.500">{btn.name}</Button>
+          <Button as={Link} to="/login" color="green.500">{btn.name}</Button>
         </HStack>
       </HStack>
     </>
