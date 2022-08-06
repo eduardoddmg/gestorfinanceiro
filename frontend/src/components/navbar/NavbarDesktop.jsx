@@ -2,6 +2,7 @@ import React from "react";
 import { Button, HStack, Link as LinkChakra } from "@chakra-ui/react";
 import { dataNavbar } from "../../utils";
 import { Link } from "react-router-dom";
+import { BsFillPersonFill } from "react-icons/bs";
 
 const NavbarDesktop = (props) => {
   const { linkHeader, linksSecondary, btn } = dataNavbar;
@@ -19,7 +20,7 @@ const NavbarDesktop = (props) => {
         top="0"
         zIndex={9999}
       >
-        <LinkChakra px={6} href={linkHeader.href}>
+        <LinkChakra px={6} href={`/${linkHeader.href}`}>
           {linkHeader.name}
         </LinkChakra>
         <HStack bg="green.500" spacing={4}>
@@ -28,7 +29,14 @@ const NavbarDesktop = (props) => {
               {item.name}
             </LinkChakra>
           ))}
-          <Button as={Link} to="/login" color="green.500">{btn.name}</Button>
+          <Button
+            as={Link}
+            to="/login"
+            leftIcon={<BsFillPersonFill />}
+            color="green.500"
+          >
+            {btn.name}
+          </Button>
         </HStack>
       </HStack>
     </>

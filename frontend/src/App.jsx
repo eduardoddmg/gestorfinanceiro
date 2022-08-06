@@ -11,18 +11,15 @@ import {
   Box,
 } from "@chakra-ui/react";
 import "./styles/global.css";
-
+import { useMediaQuery } from "usehooks-ts";
 import Card from "./components/card";
 import Accordion from "./components/accordion";
 import Input from "./components/input";
 import LayoutComponent from "./components/LayoutComponent";
 import { beneficies, services, questions } from "./utils";
-import { useResponsive } from "./hooks";
 
 function App() {
-  const responsive = useResponsive();
-
-  const changeScale = (e) => (e.target.style.transform = "scale(50%)");
+  const responsive = useMediaQuery("(max-width: 1000px)");
 
   return (
     <LayoutComponent>
@@ -32,7 +29,7 @@ function App() {
         align="center"
         justify="center"
         id="home"
-        pt={responsive ? 5 : 20}
+        pt={responsive ? 5 : 30}
         pb={10}
       >
         <VStack

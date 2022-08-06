@@ -5,24 +5,29 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  DrawerHeader,
   DrawerBody,
   Stack,
-  Link
+  VStack,
+  Link as LinkChakra,
+  Flex,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useRef } from "react";
 import { dataNavbar } from "../utils";
+import { BsFillPersonFill } from "react-icons/bs";
 
 const Drawer = (props) => {
   const { direction, w, open, setOpen } = props;
-    const { linkHeader, linksSecondary } = dataNavbar;
+  const { btn, linksSecondary, linkHeader } = dataNavbar;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
 
+  const callback = useCallback(() => console.log(isOpen), [isOpen]);
+
   useEffect(() => {
+    !isOpen && setOpen(false);
     open && onOpen();
-    !open && onClose();
   });
 
   return (
@@ -35,16 +40,42 @@ const Drawer = (props) => {
         size={w}
       >
         <DrawerOverlay />
-        <DrawerContent bg="green.500" color="white" py={5} fontWeight="bold" fontSize={25} spacing={5}>
-          <DrawerCloseButton />
+        <DrawerContent
+          bg="green.500"
+          color="white"
+          fontWeight="bold"
+          fontSize={25}
+          spacing={5}
+        >
+          <DrawerCloseButton py={6} size="lg" />
           <DrawerBody>
-            <Stack justify="start" pt={20}>
+            <Flex direction="column" justify="center" align="center" py={10}>
+              <LinkChakra href={`/${linkHeader.href}`} my={3}>
+                {linkHeader.name}
+              </LinkChakra>
               {linksSecondary.map((link, index) => (
-                <Link href={link.href} key={index} onClick={() => setOpen(false)}>
+                <LinkChakra
+                  href={`/${link.href}`}
+                  key={index}
+                  onClick={onClose}
+                  my={3}
+                >
                   {link.name}
-                </Link>
+                </LinkChakra>
               ))}
-            </Stack>
+              <Button
+                as={Link}
+                leftIcon={<BsFillPersonFill />}
+                to="/login"
+                color="green.500"
+                my={5}
+                size="lg"
+                fontSize={20}
+                onClick={onClose}
+              >
+                {btn.name}
+              </Button>
+            </Flex>
           </DrawerBody>
         </DrawerContent>
       </DrawerChakra>

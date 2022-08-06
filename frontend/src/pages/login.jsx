@@ -12,9 +12,10 @@ import Input from "../components/input";
 import LayoutComponent from "../components/LayoutComponent";
 import { Link } from "react-router-dom";
 import { useResponsive } from "../hooks";
+import { useMediaQuery } from 'usehooks-ts'; 
 
 const Login = () => {
-  const responsive = useResponsive();
+  const responsive = useMediaQuery("(max-width: 1000px)");
   return (
     <LayoutComponent>
       <HStack justify="center" align="center">
