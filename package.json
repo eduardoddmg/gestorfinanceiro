@@ -1,0 +1,20 @@
+{
+  "name": "gestor-financeiro",
+  "version": "1.0.0",
+  "description": "Gestor financeiro para ajudar em gerenciamento de entrada e saída de valores",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-backend": "node backend/src/index.js",
+    "postinstall": "npm run start-backend" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eduardoddmg/gestorfinanceiro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eduardoddmg/gestorfinanceiro/issues"
+  },
+  "homepage": "https://github.com/eduardoddmg/gestorfinanceiro#readme"
+}

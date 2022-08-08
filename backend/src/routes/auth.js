@@ -24,9 +24,9 @@ router.get('/loginUser', async (req, res) => {
         const userData = req.query;
         console.log(userData);
         const userBool = await userSchema.exists({ username: userData.username, password: userData.password });
-        userBool ? res.status(200).json({message: 'Usuário logado com sucesso', isLogged: true}) : res.status(200).json({message: 'Dados inválidos', isLogged: false});
+        userBool ? res.status(200).json({ message: 'Usuário logado com sucesso', isLogged: true }) : res.status(200).json({ message: 'Dados inválidos', isLogged: false });
     } catch (error) {
-        res.status(500).json({ message: error })
+        res.status(500).json({ message: error });
     }
 })
 
