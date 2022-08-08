@@ -4,7 +4,7 @@
   "description": "Gestor financeiro para ajudar em gerenciamento de entrada e saída de valores",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-backend": "node backend/src/index.js",
+    "start-backend": "cd backend && npm i && node src/index.js",
     "postinstall": "npm run start-backend" 
   },
   "repository": {
