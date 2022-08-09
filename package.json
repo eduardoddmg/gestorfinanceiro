@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/eduardoddmg/gestorfinanceiro#readme",
   "engines": {
-    "node": "16.14.0"
+    "node": "16.14.0",
+    "npm": "8.3.1"
   }
 }
