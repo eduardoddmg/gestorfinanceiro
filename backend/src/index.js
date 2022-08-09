@@ -15,11 +15,6 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/transaction", transactionRoute);
 
-// routes
-app.get("/", (req, res) => {
-  res.send("Welcome to my API");
-});
-
 // mongodb connection
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -28,3 +23,9 @@ mongoose
 
 // server listening
 app.listen(port, () => console.log("Server listening to", port));
+
+// routes
+app.get("/", (req, res) => {
+  res.send("Welcome to my API");
+});
+
