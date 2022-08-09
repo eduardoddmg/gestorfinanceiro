@@ -7,7 +7,7 @@ const transactionRoute = require('./routes/transaction');
 
 // settings
 const app = express();
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 3001;
 
 // middlewaresa
 app.use(express.json());
@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 
 // mongodb connection
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB Atlas"))
   .catch((error) => console.error(error));
 
