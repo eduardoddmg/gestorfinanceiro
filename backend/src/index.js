@@ -9,7 +9,8 @@ const transactionRoute = require('./routes/transaction');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// middlewaresa
+// middlewares
+app.user(cors());
 app.use(express.json());
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
