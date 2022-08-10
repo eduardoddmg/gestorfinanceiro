@@ -10,7 +10,8 @@ router.post('/createUser', async (req, res) => {
         console.log(userBool);
         if (!userBool) {
             const newUser = new userSchema(userData);
-            await newUser.save();
+            const user = await newUser.save();
+            console.log(user);
             res.status(200).send({message: 'usuario criado com sucesso', type: 'success'});
         } else {
             res.status(200).send({ message: 'usuario ja existe', type: 'error' });
