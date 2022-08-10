@@ -4,33 +4,112 @@ import {
   Image,
   Button,
   VStack,
+  Stack,
   Text,
   Link as LinkChakra,
+  FormControl,
+  Input,
+  FormLabel,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  FormHelperText
 } from "@chakra-ui/react";
-import React from "react";
-import Input from "../components/input";
+import React, { useState } from "react";
 import LayoutComponent from "../components/LayoutComponent";
 import { Link } from "react-router-dom";
-import { useMediaQuery } from 'usehooks-ts'; 
+import { useMediaQuery } from "usehooks-ts";
+import { BiShow, BiHide } from "react-icons/bi";
+
+import { useForm } from "react-hook-form";
+import { registerUser, regexEmail } from '../utils';
+import validator from 'validator';
 
 const Register = () => {
   const responsive = useMediaQuery("(max-width: 1000px)");
+  const { register, handleSubmit, setError, formState: { errors } } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
+
+  const onSubmit = (data) => {
+    if (data.password != data.re_password) {
+      setError('password', {type: 'custom', message: 'As senhas precisa ser igual'});
+      setError('re_password', {type: 'custom', message: 'As senhas precisa ser igual'});
+    }
+    else registerUser(data);
+  };
   return (
     <LayoutComponent>
       <HStack justify="center" align="center">
         <VStack
-          spacing={5}
-          mb={10}
-          w={responsive ? "90%" : "40%"}
+          as="form"
+          w="50%"
+          onSubmit={handleSubmit(onSubmit)}
           justify="center"
-          py={10}
         >
           <Heading>Register</Heading>
-          <Input label="username" width="80%" />
-          <Input label="email" width="80%" />
-          <Input label="password" width="80%" />
-          <Input label="re-password" width="80%" />
-          <Button colorScheme="green" width="80%">
+          <FormControl w="80%" isInvalid={errors.username}>
+            <FormLabel>Username</FormLabel>
+            <Input
+              placeholder="username"
+              width="100%"
+              {...register("username", { required: 'Usuário precisa ter no mínimo 8 caracteres', minLength: {
+                value: 8, message: 'Usuário precisa ter no mínimo 8 caracteres'} })}
+            />
+            {errors.username && <FormHelperText color="red">{errors.username.message}</FormHelperText>}
+          </FormControl>
+          <FormControl w="80%" isInvalid={errors.email}>
+            <FormLabel>Email</FormLabel>
+            <Input placeholder="email" width="100%" {...register("email", { required: {
+              value: true, message: 'Email inválido'}, pattern: {
+              value: regexEmail,
+              message: 'Email inválido'
+            } })} />
+            {errors.email && <FormHelperText color="red">{errors.email.message}</FormHelperText>}
+          </FormControl>
+          <FormControl w="80%" isInvalid={errors.password}>
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input
+                placeholder="password"
+                width="100%"
+                type={showPassword ? "text" : "password"}
+                {...register("password", { required: 'A senha precisa ter no mínimo 8 caracteres', minLength: {
+                  value: 8, message: 'A senha precisa ter no mínimo 8 caracteres'} })}
+              />
+              <InputRightElement>
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  bg="transparent"
+                  icon={showPassword ? <BiHide /> : <BiShow />}
+                />
+              </InputRightElement>
+            </InputGroup>
+            {errors.password && <FormHelperText color="red">{errors.password.message}</FormHelperText>}
+          </FormControl>
+          <FormControl w="80%" isInvalid={errors.re_password}>
+            <FormLabel>Re-Password</FormLabel>
+            <InputGroup>
+              <Input
+                placeholder="re-password"
+                width="100%"
+                type={showRePassword ? "text" : "password"}
+                {...register("re_password", { required: 'A senha precisa ter no mínimo 8 caracteres', minLength: {
+                  value: 8,
+                  message: 'A senha precisa ter no mínimo 8 caracteres'
+                }})}
+              />
+              <InputRightElement>
+                <IconButton
+                  onClick={() => setShowRePassword(!showRePassword)}
+                  bg="transparent"
+                  icon={showRePassword ? <BiHide /> : <BiShow />}
+                />
+              </InputRightElement>
+            </InputGroup>
+            {errors.re_password && <FormHelperText color="red">{errors.re_password.message}</FormHelperText>}
+          </FormControl>
+          <Button type="submit" colorScheme="green" width="80%">
             Enviar
           </Button>
           <Text>

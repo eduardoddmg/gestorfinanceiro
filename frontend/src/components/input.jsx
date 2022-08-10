@@ -14,6 +14,7 @@ const Input = (props) => {
         />
       ) : (
         <InputChakra
+          as="input"
           focusBorderColor="green.500"
           colorScheme="green"
           placeholder={placeholder}
