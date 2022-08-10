@@ -12,7 +12,7 @@ router.post('/createUser', async (req, res) => {
             console.log('console 1');
             const newUser = new userSchema(userData);
             console.log('console 2');
-            const user = await newUser.save();
+            newUser.save().then(data => res.send(data));
             console.log('console 3');
             res.status(200);
         } else {
