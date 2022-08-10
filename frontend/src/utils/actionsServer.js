@@ -7,6 +7,7 @@ export async function postServer(url, body) {
 }
 
 export async function registerUser(body) {
-    const resp = await postServer('https://finances-app-backend.herokuapp.com/api/auth/createUser', body);
+    const { username, email, password } = body;
+    const resp = await postServer('https://finances-app-backend.herokuapp.com/api/auth/createUser', { username, email, password });
     console.log(resp);
 }
