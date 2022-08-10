@@ -13,30 +13,55 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-  FormHelperText
+  FormHelperText,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import LayoutComponent from "../components/LayoutComponent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 import { BiShow, BiHide } from "react-icons/bi";
 
 import { useForm } from "react-hook-form";
-import { registerUser, regexEmail } from '../utils';
-import validator from 'validator';
+import { registerUser, regexEmail } from "../utils";
 
 const Register = () => {
   const responsive = useMediaQuery("(max-width: 1000px)");
-  const { register, handleSubmit, setError, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
-  const onSubmit = (data) => {
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
     if (data.password != data.re_password) {
-      setError('password', {type: 'custom', message: 'As senhas precisa ser igual'});
-      setError('re_password', {type: 'custom', message: 'As senhas precisa ser igual'});
+      setError("password", {
+        type: "custom",
+        message: "As senhas precisa ser igual",
+      });
+      setError("re_password", {
+        type: "custom",
+        message: "As senhas precisa ser igual",
+      });
+    } else {
+      const response = await registerUser(data);
+      console.log(response);
+      if (response.data.type === 'success') navigate('/login');
+      return toast({
+        title: response.data.type,
+        description: response.data.message,
+        status: response.data.type,
+        duration: 9000,
+        isClosable: true,
+        position: "bottom-right",
+      });
     }
-    else registerUser(data);
   };
   return (
     <LayoutComponent>
@@ -53,19 +78,41 @@ const Register = () => {
             <Input
               placeholder="username"
               width="100%"
-              {...register("username", { required: 'Usuário precisa ter no mínimo 8 caracteres', minLength: {
-                value: 8, message: 'Usuário precisa ter no mínimo 8 caracteres'} })}
+              {...register("username", {
+                required: "Usuário precisa ter no mínimo 8 caracteres",
+                minLength: {
+                  value: 8,
+                  message: "Usuário precisa ter no mínimo 8 caracteres",
+                },
+              })}
             />
-            {errors.username && <FormHelperText color="red">{errors.username.message}</FormHelperText>}
+            {errors.username && (
+              <FormHelperText color="red">
+                {errors.username.message}
+              </FormHelperText>
+            )}
           </FormControl>
           <FormControl w="80%" isInvalid={errors.email}>
             <FormLabel>Email</FormLabel>
-            <Input placeholder="email" width="100%" {...register("email", { required: {
-              value: true, message: 'Email inválido'}, pattern: {
-              value: regexEmail,
-              message: 'Email inválido'
-            } })} />
-            {errors.email && <FormHelperText color="red">{errors.email.message}</FormHelperText>}
+            <Input
+              placeholder="email"
+              width="100%"
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email inválido",
+                },
+                pattern: {
+                  value: regexEmail,
+                  message: "Email inválido",
+                },
+              })}
+            />
+            {errors.email && (
+              <FormHelperText color="red">
+                {errors.email.message}
+              </FormHelperText>
+            )}
           </FormControl>
           <FormControl w="80%" isInvalid={errors.password}>
             <FormLabel>Password</FormLabel>
@@ -74,8 +121,13 @@ const Register = () => {
                 placeholder="password"
                 width="100%"
                 type={showPassword ? "text" : "password"}
-                {...register("password", { required: 'A senha precisa ter no mínimo 8 caracteres', minLength: {
-                  value: 8, message: 'A senha precisa ter no mínimo 8 caracteres'} })}
+                {...register("password", {
+                  required: "A senha precisa ter no mínimo 8 caracteres",
+                  minLength: {
+                    value: 8,
+                    message: "A senha precisa ter no mínimo 8 caracteres",
+                  },
+                })}
               />
               <InputRightElement>
                 <IconButton
@@ -85,7 +137,11 @@ const Register = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            {errors.password && <FormHelperText color="red">{errors.password.message}</FormHelperText>}
+            {errors.password && (
+              <FormHelperText color="red">
+                {errors.password.message}
+              </FormHelperText>
+            )}
           </FormControl>
           <FormControl w="80%" isInvalid={errors.re_password}>
             <FormLabel>Re-Password</FormLabel>
@@ -94,10 +150,13 @@ const Register = () => {
                 placeholder="re-password"
                 width="100%"
                 type={showRePassword ? "text" : "password"}
-                {...register("re_password", { required: 'A senha precisa ter no mínimo 8 caracteres', minLength: {
-                  value: 8,
-                  message: 'A senha precisa ter no mínimo 8 caracteres'
-                }})}
+                {...register("re_password", {
+                  required: "A senha precisa ter no mínimo 8 caracteres",
+                  minLength: {
+                    value: 8,
+                    message: "A senha precisa ter no mínimo 8 caracteres",
+                  },
+                })}
               />
               <InputRightElement>
                 <IconButton
@@ -107,7 +166,11 @@ const Register = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            {errors.re_password && <FormHelperText color="red">{errors.re_password.message}</FormHelperText>}
+            {errors.re_password && (
+              <FormHelperText color="red">
+                {errors.re_password.message}
+              </FormHelperText>
+            )}
           </FormControl>
           <Button type="submit" colorScheme="green" width="80%">
             Enviar
