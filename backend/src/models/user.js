@@ -13,6 +13,11 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
 
+  },
+  writeConcern: {
+    w: 'majority',
+    j: true,
+    wtimeout: 1000
   }
 });
 
