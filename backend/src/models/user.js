@@ -15,7 +15,6 @@ const userSchema = mongoose.Schema({
 
   },
   writeConcern: {
-    w: 'majority',
     j: true,
     wtimeout: 1000
   }
