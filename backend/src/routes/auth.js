@@ -14,7 +14,7 @@ router.post('/createUser', async (req, res) => {
             console.log('console 2');
             const user = await newUser.save();
             console.log('console 3');
-            res.status(200).send({message: 'usuario criado com sucesso', type: 'success', data: user});
+            res.status(200);
         } else {
             res.status(200).send({ message: 'usuario ja existe', type: 'error' });
         }
