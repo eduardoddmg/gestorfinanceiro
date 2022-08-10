@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, HStack, Link as LinkChakra } from "@chakra-ui/react";
 import { dataNavbar } from "../../utils";
 import { Link } from "react-router-dom";
 import { BsFillPersonFill } from "react-icons/bs";
+import { BiExit } from 'react-icons/bi';
+import { userContext } from '../../context';
 
 const NavbarDesktop = (props) => {
+  const { user, changeUsername } = useContext(userContext);
   const { linkHeader, linksSecondary, btn } = dataNavbar;
   return (
     <>
@@ -29,14 +32,21 @@ const NavbarDesktop = (props) => {
               {item.name}
             </LinkChakra>
           ))}
-          <Button
-            as={Link}
-            to="/login"
-            leftIcon={<BsFillPersonFill />}
-            color="green.500"
-          >
-            {btn.name}
-          </Button>
+          {!user ? 
+            (<Button
+              as={Link}
+              to="/login"
+              leftIcon={<BsFillPersonFill />}
+              color="green.500">
+                {btn.name}
+              </Button>) : 
+            (<Button
+              leftIcon={<BiExit />}
+              color="green.500"
+              onClick={() => changeUsername('')}
+              >
+                Sair
+              </Button>)}
         </HStack>
       </HStack>
     </>
