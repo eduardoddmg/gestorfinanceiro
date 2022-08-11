@@ -14,7 +14,7 @@ router.post('/createUser', async (req, res) => {
             console.log('console 2');
             const user = await newUser.save();
             console.log('console 3');
-            res.status(200).send({message: 'usuario criado com sucesso', type: 'success', data: user});
+            res.status(200).send({ message: 'usuario criado com sucesso', type: 'success', data: user });
         } else {
             res.status(200).send({ message: 'usuario ja existe', type: 'error' });
         }
@@ -28,7 +28,8 @@ router.get('/loginUser', async (req, res) => {
         const userData = req.query;
         console.log(userData);
         const userBool = await userSchema.exists({ username: userData.username, password: userData.password });
-        userBool ? res.status(200).json({ message: 'Usuário logado com sucesso', isLogged: true }) : res.status(200).json({ message: 'Dados inválidos', isLogged: false });
+        const userDataBd = await userSchema.findOne({ username: userData.username, password: userData.password });
+        userBool ? res.status(200).json({ message: 'Usuário logado com sucesso', isLogged: true, data: userDataBd }) : res.status(200).json({ message: 'Dados inválidos', isLogged: false });
     } catch (error) {
         res.status(500).json({ message: error });
     }
