@@ -7,7 +7,7 @@ import { BiExit } from 'react-icons/bi';
 import { userContext } from '../../context';
 
 const NavbarDesktop = (props) => {
-  const { user, changeUsername } = useContext(userContext);
+  const { user, login, logout } = useContext(userContext);
   const { linkHeader, linksSecondary, btn } = dataNavbar;
   return (
     <>
@@ -43,7 +43,7 @@ const NavbarDesktop = (props) => {
             (<Button
               leftIcon={<BiExit />}
               color="green.500"
-              onClick={() => changeUsername('')}
+              onClick={logout}
               >
                 Sair
               </Button>)}

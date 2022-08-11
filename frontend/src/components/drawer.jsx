@@ -12,13 +12,16 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useContext } from "react";
 import { dataNavbar } from "../utils";
 import { BsFillPersonFill } from "react-icons/bs";
+import { BiExit } from 'react-icons/bi'
+import { userContext } from '../context'
 
 const Drawer = (props) => {
   const { direction, w, open, setOpen } = props;
   const { btn, linksSecondary, linkHeader } = dataNavbar;
+  const { user, logout } = useContext(userContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -63,7 +66,7 @@ const Drawer = (props) => {
                   {link.name}
                 </LinkChakra>
               ))}
-              <Button
+              {!user ? <Button
                 as={Link}
                 leftIcon={<BsFillPersonFill />}
                 to="/login"
@@ -74,7 +77,19 @@ const Drawer = (props) => {
                 onClick={onClose}
               >
                 {btn.name}
-              </Button>
+              </Button> : <Button
+                leftIcon={<BiExit />}
+                color="green.500"
+                my={5}
+                size="lg"
+                fontSize={20}
+                onClick={() => {
+                  onClose();
+                  logout();
+                }}
+              >
+                Sair
+              </Button>}
             </Flex>
           </DrawerBody>
         </DrawerContent>

@@ -27,7 +27,7 @@ import { loginUser } from '../utils';
 import { userContext } from '../context';
 
 const Login = () => {
-  const { user, changeUsername } = useContext(userContext);
+  const { user, login } = useContext(userContext);
   const { register, handleSubmit, formState: { errors }} = useForm();
   const responsive = useMediaQuery("(max-width: 1000px)");
 
@@ -36,10 +36,10 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     const response = await loginUser(data);
-    console.log(response.data);
-    changeUsername(data.username);
-    console.log(user);
-    if (response.data.isLogged) navigate('/dashboard');
+    const userData = response.data;
+    login(userData.data.username, userData.data._id.toString());
+    if (userData.data) navigate('/dashboard');
+
   };
 
   return (

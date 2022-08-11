@@ -1,6 +1,6 @@
 import { Heading, Spinner, Center, Stack } from '@chakra-ui/react';
 import { userContext } from '../context';
-import { useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import LayoutComponent from '../components/LayoutComponent';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ export default function Dashboard() {
 	const { user } = useContext(userContext);
 	const navigate = useNavigate();
 
-	useEffect(() => !user ? navigate('/') : setLoading(false), []);
+	useEffect(() => !user ? navigate('/') : setLoading(false), [user]);
 
 	return (
 		<LayoutComponent>

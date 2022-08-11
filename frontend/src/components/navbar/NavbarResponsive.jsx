@@ -6,9 +6,13 @@ import Drawer from "../drawer";
 import { dataNavbar } from "../../utils";
 import { Button } from "../../styles/components";
 import { BsFillPersonFill } from "react-icons/bs";
+import { BiExit } from 'react-icons/bi';
 import { useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+import { userContext } from '../../context';
 
 const NavbarResponsive = () => {
+  const { user, logout } = useContext(userContext);
   const { linkHeader } = dataNavbar;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -28,9 +32,11 @@ const NavbarResponsive = () => {
       <HStack justify="space-between">
         <Link href={`/${linkHeader.href}`}>{linkHeader.name}</Link>
         <HStack spacing={4}>
-          <Button color="white" onClick={() => navigate("/login")}>
+          {!user ? <Button color="white" onClick={() => navigate("/login")}>
             <BsFillPersonFill />
-          </Button>
+          </Button> : <Button color="white" onClick={logout}>
+            <BiExit />
+          </Button>}
           <Button color="white" onClick={() => setOpen(true)}>
             <GiHamburgerMenu />
           </Button>
