@@ -12,7 +12,8 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-  FormHelperText
+  FormHelperText,
+  useToast
 } from "@chakra-ui/react";
 import React, { useState, useContext } from "react";
 import LayoutComponent from "../components/LayoutComponent";
@@ -32,14 +33,25 @@ const Login = () => {
   const responsive = useMediaQuery("(max-width: 1000px)");
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const response = await loginUser(data);
     const userData = response.data;
-    login(userData.data.username, userData.data._id.toString());
-    if (userData.data) navigate('/dashboard');
-
+    userData && setLoading(false);
+    if (userData.data) login(userData.data.username, userData.data._id.toString());
+    if (userData?.data) navigate('/dashboard');
+      return toast({
+        title: userData.data ? "Usuário logado": "Aconteceu alguma coisa",
+        description: userData.message,
+        status: userData.data ? "success": "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      })
   };
 
   return (
@@ -50,16 +62,16 @@ const Login = () => {
         </VStack>}
         <VStack as="form" onSubmit={handleSubmit(onSubmit)} spacing={5} mb={10} w={responsive ? "90%":"40%"} h="80vh" justify="center">
           <Heading>Login</Heading>
-          <FormControl w="80%">
+          <FormControl w="80%" isInvalid={errors.username}>
             <FormLabel>Username</FormLabel>
             <Input placelholder="username" width="100%" {...register("username", {required: "Username tem que ter no mínimo 8 caracteres", minLength: { value: 8, message: "Username tem que ter no mínimo 8 caracteres"}})} />
             {errors.username && (
               <FormHelperText color="red">
-                {errors.password.message}
+                {errors.username.message}
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl w="80%">
+          <FormControl w="80%" isInvalid={errors.password}>
             <FormLabel>Password</FormLabel>
             <InputGroup>
               <Input placelholder="password" type={showPassword ? "text" : "password"} width="100%" {...register("password", {required: "Password tem que ter no mínimo 8 caracteres", minLength: { value: 8, message: "Password tem que ter no mínimo 8 caracteres"}})} />
@@ -71,13 +83,13 @@ const Login = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            {errors.username && (
+            {errors.password && (
               <FormHelperText color="red">
                 {errors.password.message}
               </FormHelperText>
             )}
           </FormControl>
-          <Button type="submit" colorScheme="green" width="80%">
+          <Button isLoading={loading} type="submit" colorScheme="green" width="80%">
             Enviar
           </Button>
           <Text>

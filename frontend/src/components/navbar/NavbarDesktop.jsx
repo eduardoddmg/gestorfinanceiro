@@ -23,15 +23,18 @@ const NavbarDesktop = (props) => {
         top="0"
         zIndex={9999}
       >
-        <LinkChakra px={6} href={`/${linkHeader.href}`}>
+        <LinkChakra px={6} href={!user ? `/${linkHeader.href}` : `#`}>
           {linkHeader.name}
         </LinkChakra>
         <HStack bg="green.500" spacing={4}>
-          {linksSecondary.map((item, index) => (
+          {!user && linksSecondary.map((item, index) => (
             <LinkChakra href={`/${item.href}`} key={index} px={6}>
               {item.name}
             </LinkChakra>
           ))}
+          {user && <Button leftIcon={<BsFillPersonFill />} color="green.500">
+            {user}
+          </Button>}
           {!user ? 
             (<Button
               as={Link}
