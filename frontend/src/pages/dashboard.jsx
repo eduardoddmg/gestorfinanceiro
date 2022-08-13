@@ -1,4 +1,4 @@
-import { Heading, Spinner, HStack, VStack, Center, Stack, Button, IconButton, useDisclosure, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { Heading, Spinner, HStack, VStack, Center, Stack, Button, IconButton, useDisclosure, FormControl, FormLabel, Input, FormHelperText, NumberInput, NumberInputField } from "@chakra-ui/react";
 import { userContext } from "../context";
 import { useContext, useEffect, useState, useCallback } from "react";
 import LayoutComponent from "../components/LayoutComponent";
@@ -7,25 +7,52 @@ import Modal from "../components/modal";
 import { useNavigate } from "react-router-dom";
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
 import { AiFillBank, AiOutlinePlusCircle } from 'react-icons/ai';
+import { useForm } from 'react-hook-form';
 
 
+function ModalForm (props) {
+  const { register, handleSubmit, setValue, getValues, formState: { errors }} = useForm();
+  const { onClose } = props;
+  const format = val => `$`+val;
+  const parse = val => val.replace(/^\$/, '');
 
-function ModalForm () {
+  const onSubmit = data => {
+    console.log(data);
+    onClose();
+  };
+
   return (
-    <VStack>
-      <FormControl>
+    <VStack as="form" onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={errors.item_name}>
         <FormLabel>Nome do item</FormLabel>
-        <Input />
+        <Input {...register("item_name", {required: "O nome do item precisa ter no mínimo 5 caracteres", minLength: {value: 5, message: "O nome do item precisa ter no mínimo 5 caracteres"}})} />
+        {errors.item_name && (
+              <FormHelperText color="red">
+                {errors.item_name.message}
+              </FormHelperText>
+            )}
       </FormControl>
-      <FormControl>
+      <FormControl isInvalid={errors.item_value}>
         <FormLabel>Valor do item</FormLabel>
-        <Input />
+        <NumberInput>
+          <NumberInputField {...register("item_value", {setValueAs: v => parseInt(v),required: "O valor mínimo do item é $ 1.00", min: {value: 1, message: "O valor mínimo do item é $ 1.00"}})} defaultValue="$ 0.00" />
+        </NumberInput>
+        {errors.item_value && (
+              <FormHelperText color="red">
+                {errors.item_value.message}
+              </FormHelperText>
+            )}
       </FormControl>
-      <FormControl>
+      <FormControl isInvalid={errors.item_description}>
         <FormLabel>Descrição do item</FormLabel>
-        <Input />
+        <Input {...register("item_description", {required: "A descrição do item precisa ter no mínimo 5 caracteres", minLength: {value: 8, message: "A descrição do item precisa ter no mínimo 5 caracteres"}})} />
+        {errors.item_description && (
+              <FormHelperText color="red">
+                {errors.item_description.message}
+              </FormHelperText>
+            )}
       </FormControl>
-      <Button colorScheme="green" px={20} my={5}>Criar Item</Button>
+      <Button type="submit" colorScheme="green" px={20} my={5}>Criar Item</Button>
     </VStack>
   )
 };
@@ -47,7 +74,7 @@ export default function Dashboard() {
         </Center>
       ) : (
         <VStack spacing={5} minH="100vh" p={5} w="60%" mx="auto" align="start">
-          <Modal onOpen={onOpen} isOpen={isOpen} onClose={onClose} title="Adicionar movimentação" content={<ModalForm />} />
+          <Modal onOpen={onOpen} isOpen={isOpen} onClose={onClose} title="Adicionar movimentação" content={<ModalForm onClose={onClose} />} />
           <HStack justify="space-between" spacing={5} mt={10} w="full">
             <CardMoney width="30%" title="Receita" icon={<BsArrowDown fontSize={20} />} />
             <CardMoney width="30%" title="Despesas" icon={<BsArrowUp fontSize={20} />} />
