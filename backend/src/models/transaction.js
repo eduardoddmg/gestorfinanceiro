@@ -9,6 +9,14 @@ const transactionSchema = mongoose.Schema({
         type: Number,
         required: true
     }, 
+    nameItemTransaction: {
+        type: String,
+        required: true,
+    },
+    descriptionItemTransaction: {
+        type: String,
+        required: true,
+    }
     idUser: {
         type: String,
         required: true
