@@ -20,7 +20,12 @@ const transactionSchema = mongoose.Schema({
     idUser: {
         type: String,
         required: true
-    }
+    }}, {
+  writeConcern: {
+    w: 'majority',
+    j: true,
+    wtimeout: 1000
+  }
 });
 
 module.exports = mongoose.model('transaction', transactionSchema);
