@@ -16,7 +16,7 @@ const transactionSchema = mongoose.Schema({
     descriptionItemTransaction: {
         type: String,
         required: true,
-    }
+    },
     idUser: {
         type: String,
         required: true
