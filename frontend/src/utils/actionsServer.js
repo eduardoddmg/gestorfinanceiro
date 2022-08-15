@@ -19,3 +19,19 @@ export async function loginUser(body) {
         console.log(error);
     }
 }
+
+export async function createTransaction(body) {
+    const { transacao_tipo, item_name, item_value, item_description, idUser } = body; 
+    try {
+        const resp = await axios.post('https://finances-app-backend.herokuapp.com/api/transaction/createTransaction', {
+            typeTransaction: transacao_tipo,
+            valueTransaction: item_value,
+            nameItemTransaction: item_name,
+            descriptionItemTransaction: item_description,
+            idUser,
+        });
+        return resp;
+    } catch (error) {
+        console.log(error);
+    }
+}

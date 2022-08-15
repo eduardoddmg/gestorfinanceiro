@@ -16,4 +16,36 @@ router.post('/createTransaction', async (req, res) => {
     }
 });
 
+router.get('/getTransaction', async (req, res) => {
+    try {
+        const dataQuery = req.query;
+        const resp = await transactionSchema.find({ idUser: dataQuery.idUser });
+        console.log(resp);
+        res.status(200).json({ message: "Transação requisitada com sucesso", type: "success", data: resp })
+    } catch (error) {
+        res.status(500).json({ message: error, type: 'error' });
+    }
+});
+
+router.put('/updateTransaction', async (req, res) => {
+    try {
+        const data = req.body;
+        const resp = await transactionSchema.findOneAndUpdate({ _id: data._id }, data);
+        res.status(200).json({ message: "Transação atualizada com sucesso", type: "success", data: resp })
+    } catch (error) {
+        res.status(500).json({ message: error, type: 'error' });
+    }
+});
+
+router.delete('/deleteTransaction', async (req, res) => {
+    try {
+        const data = req.query;
+        const resp = await transactionSchema.findOneAndDelete({ _id: data.idTransaction });
+        res.status(200).json({ message: "Transação deletada com sucesso", type: "success", data: resp })
+    } catch (error) {
+        res.status(500).json({ message: error, type: 'error' });
+    }
+});
+
+
 module.exports = router;

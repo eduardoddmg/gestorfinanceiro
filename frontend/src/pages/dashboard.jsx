@@ -1,28 +1,36 @@
-import { Heading, Spinner, HStack, VStack, Center, Stack, Button, IconButton, useDisclosure, FormControl, FormLabel, Input, FormHelperText, NumberInput, NumberInputField } from "@chakra-ui/react";
+import { Heading, Spinner, HStack, VStack, Center, Stack, Button, IconButton, useDisclosure, FormControl, FormLabel, Input, InputGroup, FormHelperText, NumberInput, NumberInputField, Select } from "@chakra-ui/react";
 import { userContext } from "../context";
 import { useContext, useEffect, useState, useCallback } from "react";
 import LayoutComponent from "../components/LayoutComponent";
 import CardMoney from "../components/cardMoney";
 import Modal from "../components/modal";
 import { useNavigate } from "react-router-dom";
-import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
+import { BsArrowDown, BsArrowUp, BsCurrencyDollar } from 'react-icons/bs';
 import { AiFillBank, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
-
+import { createTransaction } from '../utils';
 
 function ModalForm (props) {
   const { register, handleSubmit, setValue, getValues, formState: { errors }} = useForm();
   const { onClose } = props;
-  const format = val => `$`+val;
-  const parse = val => val.replace(/^\$/, '');
+  const { idUser } = useContext(userContext);
 
-  const onSubmit = data => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    data.idUser = idUser;
+    const resp = await createTransaction(data);
+    console.log(resp.data);
     onClose();
   };
 
   return (
     <VStack as="form" onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={errors.item_name}>
+        <FormLabel>Tipo de transação</FormLabel>
+        <Select {...register("transacao_tipo")}>
+          <option value="entrada" selected>Entrada</option>
+          <option value="saida">Saída</option>
+        </Select>
+      </FormControl>
       <FormControl isInvalid={errors.item_name}>
         <FormLabel>Nome do item</FormLabel>
         <Input {...register("item_name", {required: "O nome do item precisa ter no mínimo 5 caracteres", minLength: {value: 5, message: "O nome do item precisa ter no mínimo 5 caracteres"}})} />
@@ -34,8 +42,8 @@ function ModalForm (props) {
       </FormControl>
       <FormControl isInvalid={errors.item_value}>
         <FormLabel>Valor do item</FormLabel>
-        <NumberInput>
-          <NumberInputField {...register("item_value", {setValueAs: v => parseInt(v),required: "O valor mínimo do item é $ 1.00", min: {value: 1, message: "O valor mínimo do item é $ 1.00"}})} defaultValue="$ 0.00" />
+        <NumberInput defaultValue={0}>
+          <NumberInputField {...register("item_value", {setValueAs: v => parseInt(v),required: "O valor mínimo do item é $ 1.00", min: {value: 1, message: "O valor mínimo do item é $ 1.00"}})} />
         </NumberInput>
         {errors.item_value && (
               <FormHelperText color="red">
