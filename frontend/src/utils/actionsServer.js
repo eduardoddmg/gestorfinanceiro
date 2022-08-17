@@ -35,3 +35,13 @@ export async function createTransaction(body) {
         console.log(error);
     }
 }
+
+export async function getTransaction(idUser) {
+    try {
+        console.log(idUser);
+        const resp = await axios.get(`https://finances-app-backend.herokuapp.com/api/transaction/getTransaction?idUser=${idUser}`);
+        return resp;
+    } catch (error) {
+        console.log(error);
+    }
+}

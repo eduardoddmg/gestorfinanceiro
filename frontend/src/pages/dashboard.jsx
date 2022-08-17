@@ -1,4 +1,12 @@
-import { Heading, Spinner, HStack, VStack, Center, Stack, Button, IconButton, useDisclosure, FormControl, FormLabel, Input, InputGroup, FormHelperText, NumberInput, NumberInputField, Select } from "@chakra-ui/react";
+import { Heading, Spinner, HStack, VStack, Center, Stack, Button, IconButton, useDisclosure, FormControl, FormLabel, Input, InputGroup, FormHelperText, NumberInput, NumberInputField, Select,   Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer } from "@chakra-ui/react";
 import { userContext } from "../context";
 import { useContext, useEffect, useState, useCallback } from "react";
 import LayoutComponent from "../components/LayoutComponent";
@@ -10,15 +18,48 @@ import { AiFillBank, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { createTransaction } from '../utils';
 
+function TableChakra (props) {
+  const { w } = props;
+  const { transactions } = useContext(userContext);
+
+  console.log(transactions);
+
+  return (
+    <TableContainer w={w}>
+      <Table variant='simple'>
+        <Thead>
+          <Tr>
+            <Th>Nome</Th>
+            <Th>Tipo da transação</Th>
+            <Th>Valor</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {transactions.map((item, index) => {
+              return (
+              <Tr key={index}>
+                <Td>{item.nameItemTransaction}</Td>
+                <Td>{item.typeTransaction}</Td>
+                <Td>R$ {item.valueTransaction}</Td>
+              </Tr>
+            )
+          })}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  )
+}
+
 function ModalForm (props) {
   const { register, handleSubmit, setValue, getValues, formState: { errors }} = useForm();
   const { onClose } = props;
-  const { idUser } = useContext(userContext);
+  const { idUser, addTransaction } = useContext(userContext);
 
   const onSubmit = async (data) => {
     data.idUser = idUser;
     const resp = await createTransaction(data);
     console.log(resp.data);
+    addTransaction(resp.data.data);
     onClose();
   };
 
@@ -69,7 +110,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { user } = useContext(userContext);
+  const { user, transactions } = useContext(userContext);
   const navigate = useNavigate();
 
   useEffect(() => (!user ? navigate("/") : setLoading(false)), [user]);
@@ -89,6 +130,7 @@ export default function Dashboard() {
             <CardMoney width="30%" title="Balanço" icon={<AiFillBank fontSize={20} />}/>
           </HStack>
           <Button leftIcon={<AiOutlinePlusCircle fontSize={25} />} colorScheme="green" onClick={onOpen}>Adicionar</Button>
+          <TableChakra w="full" />
         </VStack>
       )}
     </LayoutComponent>
