@@ -17,12 +17,11 @@ import { BsArrowDown, BsArrowUp, BsCurrencyDollar } from 'react-icons/bs';
 import { AiFillBank, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { createTransaction } from '../utils';
+import { useMediaQuery } from 'usehooks-ts';
 
 function TableChakra (props) {
   const { w } = props;
   const { transactions } = useContext(userContext);
-
-  console.log(transactions);
 
   return (
     <TableContainer w={w}>
@@ -35,9 +34,9 @@ function TableChakra (props) {
           </Tr>
         </Thead>
         <Tbody>
-          {transactions.map((item, index) => {
+          {transactions && transactions.map((item, index) => {
               return (
-              <Tr key={index}>
+              <Tr borderRadius="md" key={index} bg={item.typeTransaction === "entrada" ? "green.300" : "red.300"}>
                 <Td>{item.nameItemTransaction}</Td>
                 <Td>{item.typeTransaction}</Td>
                 <Td>R$ {item.valueTransaction}</Td>
@@ -110,9 +109,10 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { user, transactions } = useContext(userContext);
+  const { user, transactions, Total } = useContext(userContext);
   const navigate = useNavigate();
 
+  const responsive = useMediaQuery("(max-width: 1000px)");
   useEffect(() => (!user ? navigate("/") : setLoading(false)), [user]);
 
   return (
@@ -122,14 +122,14 @@ export default function Dashboard() {
           <Spinner color="green.500" size="xl" />
         </Center>
       ) : (
-        <VStack spacing={5} minH="100vh" p={5} w="60%" mx="auto" align="start">
+        <VStack spacing={5} minH="100vh" p={5} w={responsive ? "90%" : "60%"} mx="auto" align="start">
           <Modal onOpen={onOpen} isOpen={isOpen} onClose={onClose} title="Adicionar movimentação" content={<ModalForm onClose={onClose} />} />
-          <HStack justify="space-between" spacing={5} mt={10} w="full">
-            <CardMoney width="30%" title="Receita" icon={<BsArrowDown fontSize={20} />} />
-            <CardMoney width="30%" title="Despesas" icon={<BsArrowUp fontSize={20} />} />
-            <CardMoney width="30%" title="Balanço" icon={<AiFillBank fontSize={20} />}/>
-          </HStack>
           <Button leftIcon={<AiOutlinePlusCircle fontSize={25} />} colorScheme="green" onClick={onOpen}>Adicionar</Button>
+          <Stack justify={responsive ? "center" : "space-between"} direction={responsive ? "column" : "row"} spacing={5} mt={10} w="full">
+            <CardMoney width={responsive ? "90%" : "30%"} title="Receita" icon={<BsArrowUp fontSize={20} color="green" />} value={new Total().entradaCalc} />
+            <CardMoney width={responsive ? "90%" : "30%"} title="Despesas" icon={<BsArrowDown fontSize={20} color="red" />} value={new Total().saidaCalc} />
+            <CardMoney width={responsive ? "90%" : "30%"} title="Balanço" icon={<AiFillBank fontSize={20} />} value={new Total().entradaCalc - new Total().saidaCalc} />
+          </Stack>
           <TableChakra w="full" />
         </VStack>
       )}

@@ -7,7 +7,7 @@ export const UseAuth = ({ children }) => {
 
 	const [user, setUser] = useState('');
 	const [idUser, setIdUser] = useState('');
-	const [transactions, setTransactions] = useState(null);
+	const [transactions, setTransactions] = useState([]);
 
 	const login = async (username, id) => {
 		setUser(username);
@@ -15,7 +15,7 @@ export const UseAuth = ({ children }) => {
 		const resp = await getTransaction(id);
 		console.log(id);
 		setTransactions(resp.data.data);
-		console.log(resp);
+		console.log(resp.data.data);
 	};
 	const logout = () => {
 		setUser('');
@@ -26,8 +26,22 @@ export const UseAuth = ({ children }) => {
 		setTransactions([...transactions, data]);
 	}
 
+	class Total {
+		constructor() {
+			this.entrada = 0;
+			this.saida = 0;
+			this.balanco = 0;
+			this.transactions = transactions;
+		}
+		get entradaCalc() {
+			return this.transactions.filter(item => item.typeTransaction === "entrada").reduce((sum, item) => sum+=item.valueTransaction,0);
+		}
+		get saidaCalc() {
+			return this.transactions.filter(item => item.typeTransaction === "saida").reduce((sum, item) => sum+=item.valueTransaction,0);
+		}
+	}
 	return (
-		<userContext.Provider value={{ user, idUser, transactions, addTransaction, login, logout }}>
+		<userContext.Provider value={{ user, idUser, transactions, addTransaction, login, logout, Total }}>
 			{children}
 		</userContext.Provider>
 	);

@@ -36,10 +36,13 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const toast = useToast();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     if (data.password != data.re_password) {
       setError("password", {
         type: "custom",
@@ -51,7 +54,7 @@ const Register = () => {
       });
     } else {
       const response = await registerUser(data);
-      console.log(response);
+      response && setLoading(false);
       if (response.data.type === 'success') navigate('/login');
       return toast({
         title: response.data.type,
@@ -65,10 +68,10 @@ const Register = () => {
   };
   return (
     <LayoutComponent>
-      <HStack justify="center" align="center">
+      <HStack justify="center" align="center" minH="100vh">
         <VStack
           as="form"
-          w="50%"
+          w={responsive ? "90%" : "50%"}
           onSubmit={handleSubmit(onSubmit)}
           justify="center"
         >
@@ -172,7 +175,7 @@ const Register = () => {
               </FormHelperText>
             )}
           </FormControl>
-          <Button type="submit" colorScheme="green" width="80%">
+          <Button isLoading={loading} type="submit" colorScheme="green" width="80%">
             Enviar
           </Button>
           <Text>

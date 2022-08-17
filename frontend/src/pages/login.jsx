@@ -56,7 +56,7 @@ const Login = () => {
 
   return (
     <LayoutComponent>
-      <HStack justify="center" align="center">
+      <HStack justify="center" align="center" minH="100vh">
        {!responsive && <VStack w="40%" py={20} h="80vh">
           <Image src="/assets/login.svg" alt="login" boxSize="80%" my={10} />
         </VStack>}
