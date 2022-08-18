@@ -56,12 +56,12 @@ const Register = () => {
       const response = await registerUser(data);
       response && setLoading(false);
       console.log(response);
-      // if (response.data.type === 'success') navigate('/login');
+      if (response.status === 201) navigate('/login');
       return toast({
-        title: response.name,
-        description: response.message,
-        status: "error",
-        duration: 9000,
+        title: response.statusText,
+        description: response.data.message,
+        status: response.data.type
+        duration: 4000,
         isClosable: true,
         position: "bottom-right",
       });
