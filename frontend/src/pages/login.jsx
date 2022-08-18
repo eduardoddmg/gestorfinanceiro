@@ -40,14 +40,15 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     const response = await loginUser(data);
-    const userData = response.data;
+    console.log(response);
+    const userData = response.response.data;
     userData && setLoading(false);
     if (userData.data) login(userData.data.username, userData.data._id.toString());
     if (userData?.data) navigate('/dashboard');
       return toast({
         title: userData.data ? "Usuário logado": "Aconteceu alguma coisa",
         description: userData.message,
-        status: userData.data ? "success": "error",
+        status: response.response.status === 200 ? "success": "error",
         duration: 3000,
         isClosable: true,
         position: "bottom-right",

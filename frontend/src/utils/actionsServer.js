@@ -18,7 +18,7 @@ export async function loginUser(body) {
         const resp = await axios.get(`https://finances-app-backend.herokuapp.com/api/auth/loginUser?username=${username}&password=${password}`);
         return resp;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 
