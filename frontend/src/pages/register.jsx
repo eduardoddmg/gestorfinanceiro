@@ -60,7 +60,7 @@ const Register = () => {
       return toast({
         title: response.statusText,
         description: response.data.message,
-        status: response.data.type
+        status: response.data.type,
         duration: 4000,
         isClosable: true,
         position: "bottom-right",
