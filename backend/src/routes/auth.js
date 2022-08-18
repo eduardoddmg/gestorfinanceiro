@@ -60,11 +60,11 @@ router.post("/createUser", async (req, res) => {
         }
 
         if (await userSchema.exists({ username: userData.username })) {
-            res.status(400).json({ type: 'error', message: "Username already in use" });
+            res.status(200).json({ type: 'error', message: "Username already in use" });
         }
 
         if (await userSchema.exists({ email: userData.email })) {
-            res.status(400).json({ type: 'error', message: "Email already in use" });
+            res.status(200).json({ type: 'error', message: "Email already in use" });
         }
         userData.password = await bcrypt.hash(userData.password, saltRounds);
         const newUser = new userSchema(userData);
