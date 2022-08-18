@@ -52,24 +52,28 @@ async function verifyJWT(req, res, next) {
 }
 
 router.post("/createUser", async (req, res) => {
-    const userData = req.body;
+    try {
+        const userData = req.body;
 
-    if (!userData.username || !userData.password || !userData.email) {
-        res.status(400).json({ message: "Missing data in body request" });
+        if (!userData.username || !userData.password || !userData.email) {
+            res.status(400).json({ message: "Missing data in body request" });
+        }
+
+        if (await userSchema.exists({ username: userData.username })) {
+            res.status(200).json({ message: "Username already in use" });
+        }
+
+        if (await userSchema.exists({ email: userData.email })) {
+            res.status(200).json({ message: "Email already in use" });
+        }
+
+        userData.password = await bcrypt.hash(userData.password, saltRounds);
+        const newUser = new userSchema(userData);
+        const user = await newUser.save();
+        res.status(201).json({ message: "User successfully created" });
+    } catch (error) {
+        res.status(500).json({message: error})
     }
-
-    if (await userSchema.exists({ username: userData.username })) {
-        res.status(200).json({ message: "Username already in use" });
-    }
-
-    if (await userSchema.exists({ email: userData.email })) {
-        res.status(200).json({ message: "Email already in use" });
-    }
-
-    userData.password = await bcrypt.hash(userData.password, saltRounds);
-    const newUser = new userSchema(userData);
-    const user = await newUser.save();
-    res.status(201).json({ message: "User successfully created" });
 });
 
 router.get("/loginUser", authUser, sendJWT);
