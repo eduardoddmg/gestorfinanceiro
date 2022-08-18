@@ -55,11 +55,12 @@ const Register = () => {
     } else {
       const response = await registerUser(data);
       response && setLoading(false);
-      if (response.data.type === 'success') navigate('/login');
+      console.log(response);
+      // if (response.data.type === 'success') navigate('/login');
       return toast({
-        title: response.data.type,
-        description: response.data.message,
-        status: response.data.type,
+        title: response.name,
+        description: response.message,
+        status: "error",
         duration: 9000,
         isClosable: true,
         position: "bottom-right",

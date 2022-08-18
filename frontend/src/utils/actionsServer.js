@@ -3,10 +3,12 @@ import axios from 'axios';
 export async function registerUser(body) {
     try {
         const { username, email, password } = body;
+        console.log('1');
         const resp = await axios.post('https://finances-app-backend.herokuapp.com/api/auth/createUser', { username, email, password });
+        console.log('2');
         return resp;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 
