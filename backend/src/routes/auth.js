@@ -8,14 +8,14 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 async function authUser(req, res, next) {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { username, password } = req.body;
+    if (!username || !password) {
         return res
             .status(400)
             .json({ message: "Missing data in body request" });
     }
 
-    const bdUser = await userSchema.findOne({ email: email });
+    const bdUser = await userSchema.findOne({ username: username });
 
     if (!bdUser)
         return res.status(401).json({ message: "Invalid credentials" });
@@ -34,7 +34,7 @@ function sendJWT(req, res) {
         expiresIn: 300,
     });
 
-    res.status(200).json({ token: token });
+    res.status(200).json({ isLogged: true, token: token });
 }
 
 async function verifyJWT(req, res, next) {
