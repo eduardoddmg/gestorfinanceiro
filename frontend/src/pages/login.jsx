@@ -41,14 +41,15 @@ const Login = () => {
     setLoading(true);
     const response = await loginUser(data);
     console.log(response);
-    const userData = response.response.data;
+    const status = response.status || response.response.status;
+    const userData = response.data || response.response.data;
     userData && setLoading(false);
-    if (userData.data) login(userData.data.username, userData.data._id.toString());
-    if (userData?.data) navigate('/dashboard');
+    if (status === 200) login(userData.username, userData._id.toString(), userData.jwt);
+    if (status) navigate('/dashboard');
       return toast({
         title: userData.data ? "Usuário logado": "Aconteceu alguma coisa",
         description: userData.message,
-        status: response.response.status === 200 ? "success": "error",
+        status: status === 200 ? "success": "error",
         duration: 3000,
         isClosable: true,
         position: "bottom-right",

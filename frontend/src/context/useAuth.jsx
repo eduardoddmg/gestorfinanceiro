@@ -6,20 +6,22 @@ export const userContext = createContext({});
 export const UseAuth = ({ children }) => {
 
 	const [user, setUser] = useState('');
-	const [idUser, setIdUser] = useState('');
+	const [jwt, setJwt] = useState('');
+	const [id, setId] = useState('');
 	const [transactions, setTransactions] = useState([]);
 
-	const login = async (username, id) => {
+	const login = async (username, id, jwt) => {
 		setUser(username);
-		setIdUser(id);
+		setId(id);
+		setJwt(jwt);
 		const resp = await getTransaction(id);
 		console.log(id);
 		setTransactions(resp.data.data);
-		console.log(resp.data.data);
 	};
 	const logout = () => {
-		setUser('');
-		setIdUser('');
+		setId('');
+		setJwt('');
+		setUsername('');
 	};
 
 	const addTransaction = (data) => {

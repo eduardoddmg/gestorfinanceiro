@@ -34,7 +34,7 @@ function sendJWT(req, res) {
         expiresIn: 300,
     });
 
-    res.status(200).json({ isLogged: true, token: token });
+    res.status(200).json({ isLogged: true, token: token, id: req.userId });
 }
 
 async function verifyJWT(req, res, next) {
