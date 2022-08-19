@@ -24,7 +24,7 @@ async function authUser(req, res, next) {
 
     if (!check) return res.status(401).json({ message: "Invalid credentials" });
 
-    req.userId = bdUser._id.toString();
+    req.userId = bdUser._id;
     console.log(bdUser._id);
     next();
 }
