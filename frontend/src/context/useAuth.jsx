@@ -9,10 +9,24 @@ export const UseAuth = ({ children }) => {
 	const [jwt, setJwt] = useState('');
 	const [id, setId] = useState('');
 	const [transactions, setTransactions] = useState([]);
+	const [loadingServer, setLoadingServer] = useState(false);
+
+	const loginFirstRender = async () => {
+		const sessionJwt = localStorage.getItem("jwt");
+		if (sessionJwt) {
+			setJwt(sessionJwt);
+			const response = await getUser(sessionJwt);
+			const data = response.data || {username: '', _id: ''};
+			console.log(data);
+			setUser(data.username);
+			setId(data._id);
+			getTransactionId(data._id);
+			setLoadingServer(!loadingServer);
+		}
+	}
 
 	useEffect(() => {
-		const sessionJwt = localStorage.getItem("jwt");
-		sessionJwt && getUser(sessionJwt) &&setJwt(sessionJwt);
+		loginFirstRender();
 	}, []);
 
 	const login = async (username, id, jwtToken) => {
@@ -20,17 +34,22 @@ export const UseAuth = ({ children }) => {
 		setId(id);
 		setJwt(jwtToken);
 		localStorage.setItem("jwt", jwtToken);
-		const resp = await getTransaction(id);
-		setTransactions(resp.data.data);
+		getTransactionId(id);
 	};
 	const logout = () => {
 		setId('');
 		setJwt('');
 		setUser('');
+		setLoadingServer(!loadingServer);
 	};
 
 	const addTransaction = (data) => {
 		setTransactions([...transactions, data]);
+	}
+
+	const getTransactionId = async(id) => {
+		const resp = await getTransaction(id);
+		setTransactions(resp.data.data);
 	}
 
 	class Total {
@@ -48,7 +67,7 @@ export const UseAuth = ({ children }) => {
 		}
 	}
 	return (
-		<userContext.Provider value={{ user, id, transactions, addTransaction, login, logout, Total }}>
+		<userContext.Provider value={{ user, id, transactions, addTransaction, login, logout, Total, loadingServer }}>
 			{children}
 		</userContext.Provider>
 	);

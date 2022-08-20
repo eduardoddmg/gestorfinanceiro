@@ -109,15 +109,15 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { user, transactions, Total } = useContext(userContext);
+  const { user, transactions, Total, loadingServer } = useContext(userContext);
   const navigate = useNavigate();
 
   const responsive = useMediaQuery("(max-width: 1000px)");
-  useEffect(() => (!user ? navigate("/") : setLoading(false)), [user]);
+  useCallback(() => (!user ? navigate("/") : setLoading(false)), [loadingServer]);
 
   return (
     <LayoutComponent>
-      {loading ? (
+      {loading && !loadingServer ? (
         <Center h="100vh">
           <Spinner color="green.500" size="xl" />
         </Center>

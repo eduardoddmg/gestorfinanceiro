@@ -25,9 +25,9 @@ export async function loginUser(body) {
 export async function getUser(jwt) {
     try {
         const response = await axios.get('https://finances-app-backend.herokuapp.com/api/users/users', {headers: {'x-access-token': jwt}})
-        console.log(response);
+        return response;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 
@@ -43,7 +43,7 @@ export async function createTransaction(body) {
         });
         return resp;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 

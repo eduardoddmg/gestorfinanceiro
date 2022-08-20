@@ -24,7 +24,7 @@ const NavbarDesktop = (props) => {
         zIndex={9999}
       >
         <HStack bg="green.500" spacing={4}>
-          <LinkChakra px={6} href={!user ? `/${linkHeader.href}` : `#`}>
+          <LinkChakra px={6} href={`/${linkHeader.href}`}>
             {linkHeader.name}
           </LinkChakra>
           {linksSecondary.map((item, index) => (
@@ -33,7 +33,8 @@ const NavbarDesktop = (props) => {
             </LinkChakra>
           ))}
         </HStack>
-          {user && <Button leftIcon={<BsFillPersonFill />} color="green.500">
+        <HStack>
+          {user && <Button as={Link} to="/dashboard" leftIcon={<BsFillPersonFill />} color="green.500">
             {user}
           </Button>}
           {!user ? 
@@ -51,6 +52,7 @@ const NavbarDesktop = (props) => {
               >
                 Sair
               </Button>)}
+          </HStack>
       </HStack>
     </>
   );
