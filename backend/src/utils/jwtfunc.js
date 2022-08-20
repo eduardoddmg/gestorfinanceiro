@@ -3,33 +3,44 @@ const jwt = require("jsonwebtoken");
 const userSchema = require("../models/user");
 
 async function authUser(req, res, next) {
-    const { username, password } = req.body;
-    if (!username || !password) {
-        return res
-            .status(400)
-            .json({ message: "Missing data in body request" });
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res
+                .status(400)
+                .json({ message: "Missing data in body request" });
+        }
+
+        const bdUser = await userSchema.findOne({ username: username });
+
+        if (!bdUser)
+            return res.status(401).json({ message: "Invalid credentials" });
+
+        const check = await bcrypt.compare(password, bdUser.password);
+
+        if (!check)
+            return res.status(401).json({ message: "Invalid credentials" });
+
+        req.userId = bdUser._id.toString();
+        console.log(bdUser._id);
+        next();
+    } catch (err) {
+        return res.status(500).json({ message: "Unknown error" });
     }
-
-    const bdUser = await userSchema.findOne({ username: username });
-
-    if (!bdUser)
-        return res.status(401).json({ message: "Invalid credentials" });
-
-    const check = await bcrypt.compare(password, bdUser.password);
-
-    if (!check) return res.status(401).json({ message: "Invalid credentials" });
-
-    req.userId = bdUser._id.toString();
-    console.log(bdUser._id);
-    next();
 }
 
 function sendJWT(req, res) {
-    const token = jwt.sign({ id: req.userId }, process.env.SECRET, {
-        expiresIn: 10 * 60 * 60,
-    });
+    try {
+        const token = jwt.sign({ id: req.userId }, process.env.SECRET, {
+            expiresIn: 10 * 60 * 60,
+        });
 
-    res.status(200).json({ isLogged: true, token: token, id: req.userId });
+        return res
+            .status(200)
+            .json({ isLogged: true, token: token, id: req.userId });
+    } catch (err) {
+        return res.status(500).json({ message: "Unknown error" });
+    }
 }
 
 async function verifyJWT(req, res, next) {

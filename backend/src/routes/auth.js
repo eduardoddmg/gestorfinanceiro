@@ -41,7 +41,7 @@ router.post("/createUser", async (req, res) => {
             message: "User successfully created",
         });
     } catch (error) {
-        res.status(500).json({ type: "error", message: error });
+        res.status(500).json({ type: "error", message: "Unkown error" });
     }
 });
 
