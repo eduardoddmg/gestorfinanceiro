@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 async function authUser(req, res, next) {
-    const { username, password } = req.body;
+    const { username, password } = req.query;
     if (!username || !password) {
         return res
             .status(400)

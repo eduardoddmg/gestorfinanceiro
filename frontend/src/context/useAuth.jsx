@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { getTransaction } from '../utils';
+import { getTransaction, getUser } from '../utils';
 
 export const userContext = createContext({});
 
@@ -10,18 +10,23 @@ export const UseAuth = ({ children }) => {
 	const [id, setId] = useState('');
 	const [transactions, setTransactions] = useState([]);
 
-	const login = async (username, id, jwt) => {
+	useEffect(() => {
+		const sessionJwt = localStorage.getItem("jwt");
+		sessionJwt && getUser(sessionJwt) &&setJwt(sessionJwt);
+	}, []);
+
+	const login = async (username, id, jwtToken) => {
 		setUser(username);
 		setId(id);
-		setJwt(jwt);
+		setJwt(jwtToken);
+		localStorage.setItem("jwt", jwtToken);
 		const resp = await getTransaction(id);
-		console.log(id);
 		setTransactions(resp.data.data);
 	};
 	const logout = () => {
 		setId('');
 		setJwt('');
-		setUsername('');
+		setUser('');
 	};
 
 	const addTransaction = (data) => {
@@ -43,7 +48,7 @@ export const UseAuth = ({ children }) => {
 		}
 	}
 	return (
-		<userContext.Provider value={{ user, idUser, transactions, addTransaction, login, logout, Total }}>
+		<userContext.Provider value={{ user, id, transactions, addTransaction, login, logout, Total }}>
 			{children}
 		</userContext.Provider>
 	);

@@ -52,10 +52,10 @@ function TableChakra (props) {
 function ModalForm (props) {
   const { register, handleSubmit, setValue, getValues, formState: { errors }} = useForm();
   const { onClose } = props;
-  const { idUser, addTransaction } = useContext(userContext);
+  const { id, addTransaction } = useContext(userContext);
 
   const onSubmit = async (data) => {
-    data.idUser = idUser;
+    data.idUser = id;
     const resp = await createTransaction(data);
     console.log(resp.data);
     addTransaction(resp.data.data);
