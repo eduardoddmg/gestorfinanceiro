@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const userSchema = require("../models/user");
 
 async function authUser(req, res, next) {
-    const { username, password } = req.query;
+    const { username, password } = req.body;
     if (!username || !password) {
         return res
             .status(400)
@@ -26,7 +26,7 @@ async function authUser(req, res, next) {
 
 function sendJWT(req, res) {
     const token = jwt.sign({ id: req.userId }, process.env.SECRET, {
-        expiresIn: 300,
+        expiresIn: 10 * 60 * 60,
     });
 
     res.status(200).json({ isLogged: true, token: token, id: req.userId });

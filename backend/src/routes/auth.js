@@ -5,51 +5,9 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const { authUser, sendJWT, verifyJWT } = require("../utils/jwtfunc");
+
 const saltRounds = 10;
-
-async function authUser(req, res, next) {
-    const { username, password } = req.query;
-    if (!username || !password) {
-        return res
-            .status(400)
-            .json({ message: "Missing data in body request" });
-    }
-
-    const bdUser = await userSchema.findOne({ username: username });
-
-    if (!bdUser)
-        return res.status(401).json({ message: "Invalid credentials" });
-
-    const check = await bcrypt.compare(password, bdUser.password);
-
-    if (!check) return res.status(401).json({ message: "Invalid credentials" });
-
-    req.userId = bdUser._id;
-    console.log(bdUser._id);
-    next();
-}
-
-function sendJWT(req, res) {
-    const token = jwt.sign({ id: req.userId }, process.env.SECRET, {
-        expiresIn: 300,
-    });
-
-    res.status(200).json({ isLogged: true, token: token, id: req.userId });
-}
-
-async function verifyJWT(req, res, next) {
-    const token = req.headers["x-access-token"];
-
-    if (!token) return res.status(401).json({ message: "No token provided" });
-
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err)
-            return res.status(500).json({ message: "Failed to authenticate" });
-
-        req.userId = decoded.id;
-        next();
-    });
-}
 
 router.post("/createUser", async (req, res) => {
     try {
