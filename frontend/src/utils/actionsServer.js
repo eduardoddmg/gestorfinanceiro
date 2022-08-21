@@ -13,7 +13,7 @@ export async function registerUser(body) {
 }
 
 export async function loginUser(body) {
-    try {
+    try {eh
         const { username, password } = body;
         const resp = await axios.get(`https://finances-app-backend.herokuapp.com/api/auth/loginUser?username=${username}&password=${password}`);
         return resp;

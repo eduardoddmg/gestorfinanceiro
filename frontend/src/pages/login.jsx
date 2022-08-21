@@ -58,7 +58,7 @@ const Login = () => {
   return (
     <LayoutComponent>
       <HStack justify="center" align="center" minH="100vh">
-       {!responsive && <VStack w="40%" py={20} h="80vh">
+       {!responsive && <VStack w="40%" py={20} minH="80vh">
           <Image src="/assets/login.svg" alt="login" boxSize="80%" my={10} />
         </VStack>}
         <VStack as="form" onSubmit={handleSubmit(onSubmit)} spacing={5} mb={10} w={responsive ? "90%":"40%"} h="80vh" justify="center">
