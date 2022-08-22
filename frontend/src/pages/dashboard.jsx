@@ -36,7 +36,6 @@ function TableChakra (props) {
         <Tbody>
           {transactions && transactions.map((item, index) => {
               const id = item._id;
-              console.log(id);
               return (
               <Tr color="white" borderRadius="md" key={index} bg={item.typeTransaction === "entrada" ? "green.500" : "red.500"}>
                 <Td>{item.nameItemTransaction}</Td>
@@ -56,13 +55,12 @@ function TableChakra (props) {
 function ModalForm (props) {
   const { register, handleSubmit, setValue, getValues, formState: { errors }} = useForm();
   const { onClose } = props;
-  const { id, getTransactionId } = useContext(userContext);
+  const { id, getTransactionId, jwt } = useContext(userContext);
 
   const onSubmit = async (data) => {
-    data.idUser = id;
-    const resp = await createTransaction(data);
-    console.log(resp.data);
-    getTransactionId(data.idUser.toString());
+    data.userId = id;
+    const resp = await createTransaction(data, jwt);
+    resp.data && getTransactionId(data.userId.toString(), jwt);
     onClose();
   };
 

@@ -19,7 +19,7 @@ export const UseAuth = ({ children }) => {
 			console.log(data);
 			setUser(data.username);
 			setId(data._id);
-			getTransactionId(data._id);
+			getTransactionId(data._id, sessionJwt);
 			if (data.username) return true;
 			else return false;
 		}
@@ -44,9 +44,12 @@ export const UseAuth = ({ children }) => {
 		localStorage.setItem("jwt", "");
 	};
 
-	const getTransactionId = async(id) => {
-		const resp = await getTransaction(id);
-		setTransactions(resp.data.data);
+	const getTransactionId = async(id, jwtToken) => {
+		const resp = await getTransaction(id, jwtToken);
+		const responseQuery = resp.data;
+		const data = responseQuery.data;
+		console.log(data);
+		setTransactions(data);
 	}
 
 	class Total {
@@ -64,7 +67,7 @@ export const UseAuth = ({ children }) => {
 		}
 	}
 	return (
-		<userContext.Provider value={{ user, id, transactions, login, logout, Total, loginFirstRender, getTransactionId }}>
+		<userContext.Provider value={{ user, id, transactions, login, logout, Total, loginFirstRender, getTransactionId, jwt }}>
 			{children}
 		</userContext.Provider>
 	);

@@ -31,15 +31,15 @@ export async function getUser(jwt) {
     }
 }
 
-export async function createTransaction(body) {
-    const { transacao_tipo, item_name, item_value, item_description, idUser } = body; 
+export async function createTransaction(body, jwt) {
+    const { transacao_tipo, item_name, item_value, item_description, userId } = body; 
     try {
         const resp = await axios.post('https://finances-app-backend.herokuapp.com/api/transaction/createTransaction', {
             typeTransaction: transacao_tipo,
             valueTransaction: item_value,
             nameItemTransaction: item_name,
             descriptionItemTransaction: item_description,
-            idUser,
+            userId,
         }, {headers: {'x-access-token': jwt}});
         return resp;
     } catch (error) {
@@ -47,10 +47,10 @@ export async function createTransaction(body) {
     }
 }
 
-export async function getTransaction(idUser) {
+export async function getTransaction(userId, jwt) {
     try {
-        console.log(idUser);
-        const resp = await axios.get(`https://finances-app-backend.herokuapp.com/api/transaction/getTransaction?idUser=${idUser}`);
+        console.log(userId);
+        const resp = await axios.get(`https://finances-app-backend.herokuapp.com/api/transaction/getTransaction?userId=${userId}`, {headers: {'x-access-token': jwt}});
         return resp;
     } catch (error) {
         console.log(error);
