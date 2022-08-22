@@ -1,10 +1,13 @@
 export const dataNavbar = {
-  linkHeader: { name: "Home", href: "#home" },
-  linksSecondary: [
+  landingPage: [
+    { name: "Home", href: "#home" },
     { name: "Benefícios", href: "#beneficies" },
     { name: "Serviços", href: "#services" },
     { name: "FAQ", href: "#questions" },
     { name: "Contato", href: "#contact" },
+  ],
+  dashboardPage: [
+    {name: "Transações", href:"#"}
   ],
   btn: {name: "Entrar"}
 };

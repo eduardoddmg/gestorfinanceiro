@@ -16,11 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { BsArrowDown, BsArrowUp, BsCurrencyDollar } from 'react-icons/bs';
 import { AiFillBank, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
-import { createTransaction } from '../utils';
+import { createTransaction, deleteTransaction } from '../utils';
 import { useMediaQuery } from 'usehooks-ts';
 
 function TableChakra (props) {
-  const { w } = props;
+  const { w, onOpen } = props;
   const { transactions } = useContext(userContext);
 
   return (
@@ -35,11 +35,15 @@ function TableChakra (props) {
         </Thead>
         <Tbody>
           {transactions && transactions.map((item, index) => {
+              const id = item._id;
+              console.log(id);
               return (
-              <Tr borderRadius="md" key={index} bg={item.typeTransaction === "entrada" ? "green.300" : "red.300"}>
+              <Tr color="white" borderRadius="md" key={index} bg={item.typeTransaction === "entrada" ? "green.500" : "red.500"}>
                 <Td>{item.nameItemTransaction}</Td>
                 <Td>{item.typeTransaction}</Td>
                 <Td>R$ {item.valueTransaction}</Td>
+                <Td><Button colorScheme="whiteAlpha" variant="outline" onClick={onOpen}>Editar</Button></Td>
+                <Td><Button colorScheme="whiteAlpha" variant="outline">Delete</Button></Td>
               </Tr>
             )
           })}
@@ -52,13 +56,13 @@ function TableChakra (props) {
 function ModalForm (props) {
   const { register, handleSubmit, setValue, getValues, formState: { errors }} = useForm();
   const { onClose } = props;
-  const { id, addTransaction } = useContext(userContext);
+  const { id, getTransactionId } = useContext(userContext);
 
   const onSubmit = async (data) => {
     data.idUser = id;
     const resp = await createTransaction(data);
     console.log(resp.data);
-    addTransaction(resp.data.data);
+    getTransactionId(data.idUser.toString());
     onClose();
   };
 
@@ -66,8 +70,8 @@ function ModalForm (props) {
     <VStack as="form" onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={errors.item_name}>
         <FormLabel>Tipo de transação</FormLabel>
-        <Select {...register("transacao_tipo")}>
-          <option value="entrada" selected>Entrada</option>
+        <Select {...register("transacao_tipo")} defaultValue="entrada">
+          <option value="entrada">Entrada</option>
           <option value="saida">Saída</option>
         </Select>
       </FormControl>
@@ -107,17 +111,27 @@ function ModalForm (props) {
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
+  const [logged, setLogged] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { user, transactions, Total, loadingServer } = useContext(userContext);
+  const { user, transactions, Total, loginFirstRender } = useContext(userContext);
   const navigate = useNavigate();
 
   const responsive = useMediaQuery("(max-width: 1000px)");
-  useCallback(() => (!user ? navigate("/") : setLoading(false)), [loadingServer]);
+
+  const isLogged = async () => {
+    const response = await loginFirstRender();
+    !response ? navigate("/") : setLoading(false);
+    setLogged(response);
+}
+
+  useEffect(() => {
+    isLogged()
+  }, []);
 
   return (
     <LayoutComponent>
-      {loading && !loadingServer ? (
+      {loading ? (
         <Center h="100vh">
           <Spinner color="green.500" size="xl" />
         </Center>
@@ -130,7 +144,7 @@ export default function Dashboard() {
             <CardMoney width={responsive ? "90%" : "30%"} title="Despesas" icon={<BsArrowDown fontSize={20} color="red" />} value={new Total().saidaCalc} />
             <CardMoney width={responsive ? "90%" : "30%"} title="Balanço" icon={<AiFillBank fontSize={20} />} value={new Total().entradaCalc - new Total().saidaCalc} />
           </Stack>
-          <TableChakra w="full" />
+          <TableChakra w="full" onOpen={onOpen} onClose={onClose} />
         </VStack>
       )}
     </LayoutComponent>

@@ -40,6 +40,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     const response = await loginUser(data);
+    console.log(response);
     const status = response.status || response.response.status;
     const userData = response.data || response.response.data;
     userData && setLoading(false);

@@ -1,14 +1,26 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, HStack, Link as LinkChakra } from "@chakra-ui/react";
 import { dataNavbar } from "../../utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BsFillPersonFill } from "react-icons/bs";
 import { BiExit } from 'react-icons/bi';
 import { userContext } from '../../context';
 
 const NavbarDesktop = (props) => {
   const { user, login, logout } = useContext(userContext);
-  const { linkHeader, linksSecondary, btn } = dataNavbar;
+  const { landingPage, dashboardPage, btn } = dataNavbar;
+  const [dashboard, setDashboard] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const pathname = location.pathname.substring(1);
+    pathname === "dashboard" && setDashboard(true);
+    console.log(pathname);
+
+  }, []);
+
   return (
     <>
       <HStack
@@ -24,10 +36,10 @@ const NavbarDesktop = (props) => {
         zIndex={9999}
       >
         <HStack bg="green.500" spacing={4}>
-          <LinkChakra px={6} href={`/${linkHeader.href}`}>
-            {linkHeader.name}
-          </LinkChakra>
-          {linksSecondary.map((item, index) => (
+          {dashboard ? dashboardPage.map((item, index) => (
+            <LinkChakra href={`/dashboard${item.href}`} key={index} px={6}>
+              {item.name}
+            </LinkChakra>)) : landingPage.map((item, index) => (
             <LinkChakra href={`/${item.href}`} key={index} px={6}>
               {item.name}
             </LinkChakra>
@@ -46,9 +58,11 @@ const NavbarDesktop = (props) => {
                 {btn.name}
               </Button>) : 
             (<Button
+              as={Link}
               leftIcon={<BiExit />}
               color="green.500"
               onClick={logout}
+              to="/"
               >
                 Sair
               </Button>)}

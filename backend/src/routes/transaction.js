@@ -22,7 +22,7 @@ router.post("/createTransaction", verifyJWT, async (req, res) => {
 
 router.get("/getTransaction", verifyJWT, async (req, res) => {
     try {
-        const dataQuery = req.body;
+        const dataQuery = req.query;
         const resp = await transactionSchema.find({ userId: dataQuery.userId });
         console.log(resp);
         res.status(200).json({

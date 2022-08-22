@@ -9,7 +9,6 @@ export const UseAuth = ({ children }) => {
 	const [jwt, setJwt] = useState('');
 	const [id, setId] = useState('');
 	const [transactions, setTransactions] = useState([]);
-	const [loadingServer, setLoadingServer] = useState(false);
 
 	const loginFirstRender = async () => {
 		const sessionJwt = localStorage.getItem("jwt");
@@ -21,8 +20,10 @@ export const UseAuth = ({ children }) => {
 			setUser(data.username);
 			setId(data._id);
 			getTransactionId(data._id);
-			setLoadingServer(!loadingServer);
+			if (data.username) return true;
+			else return false;
 		}
+		else return false;
 	}
 
 	useEffect(() => {
@@ -40,12 +41,8 @@ export const UseAuth = ({ children }) => {
 		setId('');
 		setJwt('');
 		setUser('');
-		setLoadingServer(!loadingServer);
+		localStorage.setItem("jwt", "");
 	};
-
-	const addTransaction = (data) => {
-		setTransactions([...transactions, data]);
-	}
 
 	const getTransactionId = async(id) => {
 		const resp = await getTransaction(id);
@@ -67,7 +64,7 @@ export const UseAuth = ({ children }) => {
 		}
 	}
 	return (
-		<userContext.Provider value={{ user, id, transactions, addTransaction, login, logout, Total, loadingServer }}>
+		<userContext.Provider value={{ user, id, transactions, login, logout, Total, loginFirstRender, getTransactionId }}>
 			{children}
 		</userContext.Provider>
 	);
