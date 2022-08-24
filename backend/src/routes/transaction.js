@@ -22,8 +22,7 @@ router.post("/createTransaction", verifyJWT, async (req, res) => {
 
 router.get("/getTransaction", verifyJWT, async (req, res) => {
     try {
-        const dataQuery = req.query;
-        const resp = await transactionSchema.find({ userId: dataQuery.userId });
+        const resp = await transactionSchema.find({ userId: req.userId });
         console.log(resp);
         res.status(200).json({
             message: "Transação requisitada com sucesso",
@@ -35,7 +34,7 @@ router.get("/getTransaction", verifyJWT, async (req, res) => {
     }
 });
 
-router.put("/updateTransaction", async (req, res) => {
+router.put("/updateTransaction", verifyJWT, async (req, res) => {
     try {
         const data = req.body;
         const resp = await transactionSchema.findOneAndUpdate(
