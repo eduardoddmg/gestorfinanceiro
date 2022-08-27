@@ -4,7 +4,7 @@ const userSchema = require("../models/user");
 
 async function authUser(req, res, next) {
     try {
-        const { username, password } = req.query;
+        const { username, password } = req.post;
         if (!username || !password) {
             return res
                 .status(400)

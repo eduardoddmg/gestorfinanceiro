@@ -45,6 +45,6 @@ router.post("/createUser", async (req, res) => {
     }
 });
 
-router.get("/loginUser", authUser, sendJWT);
+router.post("/loginUser", authUser, sendJWT);
 
 module.exports = router;
