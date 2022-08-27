@@ -24,7 +24,6 @@ function TableChakra (props) {
   const { transactions, id, jwt, getTransactionId } = useContext(userContext);
 
   const sendData = (data) => {
-    console.log(data);
     setDataEdited(data);
     setTypeAction("update");
     onOpen();
@@ -79,10 +78,8 @@ function ModalForm (props) {
       const resp = await createTransaction(data, jwt);
       resp.data && getTransactionId(data.userId.toString(), jwt);
     } else if (typeAction === "update") {
-      console.log(data);
       data._id = dataEdited._id;
       const resp = await updateTransaction(data, jwt);
-      console.log(resp);
       resp.data && getTransactionId(data.userId.toString(), jwt);
     }
     onClose();
